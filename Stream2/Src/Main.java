@@ -20,48 +20,36 @@ public class Main {
             );
         }
 
+        long stream = persons.stream()
+                .filter(person -> person.getAge() < 18)
+                .count();
+        System.out.print("Количество несовершенно летних составило " + stream);
+
+
         List<String> stream1 = persons.stream()
-                .filter(person -> person.getAge() <= 27)
-                .filter(person -> person.getAge() >= 18)
+                .filter(person -> Sex.MAN == person.getSex())
+                .filter(person -> person.getAge() <= 27 && person.getAge() >= 18)
                 .map(person -> String.valueOf(person.getFamily()))
                 .collect(Collectors.toList());
         System.out.println(stream1);
 
 
-        System.out.print("Количество несовершенно летних составило ");
-        long stream = persons.stream()
-                .filter(person -> person.getAge() < 18)
-                .count();
-
+        System.out.println();
         List<Person> stream2 = persons.stream()
-
                 .filter(person -> person.getEducation() == Education.HIGHER)
+                .filter(person -> {
+                    if (person.getSex() == Sex.WOMAN) {
+                        final var b = person.getAge() <= 65;
+                        return b;
+                    } else {
+                        final var b = person.getAge() <= 60;
+                        return b;
+                    }
 
-                .filter(person -> person.getSex() == Sex.MAN && person.getAge() <= 60)
+                })
                 .filter(person -> person.getAge() >= 18)
-
                 .sorted(Comparator.comparing(person -> person.getFamily()))
-
                 .collect(Collectors.toList());
-
         System.out.println(stream2);
-
-
-        List<Person> stream3 = persons.stream()
-
-                .filter(person -> person.getEducation() == Education.HIGHER)
-
-                .filter(person -> person.getSex() == Sex.WOMAN && person.getAge() <= 65)
-                .filter(person -> person.getAge() >= 18)
-
-                .sorted(Comparator.comparing(person -> person.getFamily()))
-
-                .collect(Collectors.toList());
-
-        System.out.println(stream3);
-
-
     }
-
-
 }
